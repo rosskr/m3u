@@ -1,1 +1,13 @@
+#EXTM3U
+ 
+#EXTINF:100, Kak dolgo ya tebya zhdala 1 seriiya
+https://cloud.cdnland.in/f850c9285666cf43cd4c50f459a35c81:2023061214/tvseries/51138c20efeb5fb380e7f71a0066f9d22904dd5d/1080.mp4:hls:manifest.m3u8
 
+#EXTINF:100, Kak dolgo ya tebya zhdala 2 seriiya
+https://cloud.cdnland.in/6caca94c37e71d4d14cc92782abfeb4b:2023061214/tvseries/43da697dbf0c357d0bb20eec3e90030a06c8e9e0/1080.mp4:hls:manifest.m3u8
+
+#EXTINF:100, Kak dolgo ya tebya zhdala 3 seriiya
+https://cloud.cdnland.in/b028c8072dfb93cfee3506d666181a3a:2023061214/tvseries/03f7d1545c27b89067eeb7f67a59685e1e5bc828/1080.mp4:hls:manifest.m3u8
+
+#EXTINF:100, Kak dolgo ya tebya zhdala 4 seriiya
+https://cloud.cdnland.in/d6c999051eeff354e4e7e7e28157e204:2023061214/tvseries/993d43fc6d60dff63098915d26bc86cab1125f37/1080.mp4:hls:manifest.m3u8
