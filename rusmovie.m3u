@@ -1,16 +1,17 @@
 #EXTM3U
- 
-#EXTINF:100, Kak dolgo ya tebya zhdala 1 seriiya
-https://cloud.cdnland.in/a787438b94ffb6a0a89d58f903773c15:2023061216/tvseries/51138c20efeb5fb380e7f71a0066f9d22904dd5d/720.mp4:hls:manifest.m3u8
 
-#EXTINF:100, Kak dolgo ya tebya zhdala 2 seriiya
+#EXTGRP:Kak dolgo ya tebya zhdala 
+#EXTINF:100, 1 seriiya
+https://cloud.cdnland.in/1942d257a2e9e3ad0ebb2251c88fcccb:2023061318/tvseries/51138c20efeb5fb380e7f71a0066f9d22904dd5d/720.mp4:hls:manifest.m3u8
+
+#EXTINF:100, 2 seriiya
 https://cloud.cdnland.in/333b5b29ce8d1663e494cd85f6036d39:2023061216/tvseries/43da697dbf0c357d0bb20eec3e90030a06c8e9e0/720.mp4:hls:manifest.m3u8
 
-#EXTINF:100, Kak dolgo ya tebya zhdala 3 seriiya
+#EXTINF:100, 3 seriiya
 https://cloud.cdnland.in/f2813b898133d36d80d4acbc0dce4836:2023061216/tvseries/03f7d1545c27b89067eeb7f67a59685e1e5bc828/720.mp4:hls:manifest.m3u8
 
-#EXTINF:100, Kak dolgo ya tebya zhdala 4 seriiya
+#EXTINF:100, 4 seriiya
 https://cloud.cdnland.in/9c4a6ebfb3f5f5d6b93506d2cd38d3c2:2023061216/tvseries/993d43fc6d60dff63098915d26bc86cab1125f37/720.mp4:hls:manifest.m3u8
 
-#EXTINF:100, Kak dolgo ya tebya zhdala 5 seriiya
+#EXTINF:100, 5 seriiya
 https://cloud.cdnland.in/9c4a6ebfb3f5f5d6b93506d2cd38d3c2:2023061216/tvseries/993d43fc6d60dff63098915d26bc86cab1125f37/720.mp4:hls:manifest.m3u8
