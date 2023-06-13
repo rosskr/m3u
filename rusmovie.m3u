@@ -1,9 +1,10 @@
 #EXTM3U
 
 #EXTGRP:КАК ДОЛГО Я ТЕБЯ ЖДАЛА (2019)
+
 #EXTINF:100, 1 seriiya
 #EXTIMG:https://kinokong.pro/uploads/mini/281x391/df/543fca5fea722a5cd2865e6946f184.jpg
-https://cloud.cdnland.in/1942d257a2e9e3ad0ebb2251c88fcccb:2023061318/tvseries/51138c20efeb5fb380e7f71a0066f9d22904dd5d/720.mp4:hls:manifest.m3u8
+https://cloud.cdnland.in/dbf89853213fd98ebb28c93526c489fe:2023061412/tvseries/51138c20efeb5fb380e7f71a0066f9d22904dd5d/720.mp4:hls:manifest.m3u8
 
 #EXTINF:100, 2 seriiya
 https://cloud.cdnland.in/1ed1b8a5fec5b03d0742c8f9ea5e7346:2023061318/tvseries/43da697dbf0c357d0bb20eec3e90030a06c8e9e0/720.mp4:hls:manifest.m3u8
