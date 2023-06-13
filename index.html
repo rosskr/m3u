@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!-- 6/13 9:31 -->
   <title>M3U Playlist Player</title>
   <link href="https://cdn.plyr.io/3.6.7/plyr.css" rel="stylesheet">
   <style>
@@ -32,17 +31,17 @@
       margin-bottom: 4px;
     }
 
-  #playlistInput {
-    flex-grow: 1;
-    padding: 5px;
-    margin-left: 10px;
-    width: auto; /* Adjust the width as per your requirement */
-  }
+    #playlistInput {
+      flex-grow: 1;
+      padding: 5px;
+      margin-left: 10px;
+      width: auto; /* Adjust the width as per your requirement */
+    }
 
-  #loadButton {
-    padding: 5px 10px;
-    width: auto; /* Adjust the width as per your requirement */
-  }
+    #loadButton {
+      padding: 5px 10px;
+      width: auto; /* Adjust the width as per your requirement */
+    }
 
     #subMenu {
       position: absolute;
@@ -124,12 +123,13 @@
       background-color: #888888;
       color: white;
     }
-.group-description {
-  background-color: #888888;
-  color: white;
-  padding: 5px;
-  margin-bottom: 5px;
-}
+
+    .group-description {
+      background-color: #888888;
+      color: white;
+      padding: 5px;
+      margin-bottom: 5px;
+    }
   </style>
 </head>
 <body>
@@ -167,16 +167,16 @@
   <script src="https://unpkg.com/plyr@3"></script>
   <script>
     // Helper function to show/hide sub-menu
-function toggleSubMenu() {
-  const subMenu = document.getElementById("subMenu");
-  const style = window.getComputedStyle(subMenu);
+    function toggleSubMenu() {
+      const subMenu = document.getElementById("subMenu");
+      const style = window.getComputedStyle(subMenu);
 
-  if (style.display === "none" || style.display === "") {
-    subMenu.style.display = "block";
-  } else {
-    subMenu.style.display = "none";
-  }
-}
+      if (style.display === "none" || style.display === "") {
+        subMenu.style.display = "block";
+      } else {
+        subMenu.style.display = "none";
+      }
+    }
 
     // Function to load playlist from URL
     function loadPlaylist(url) {
@@ -203,12 +203,12 @@ function toggleSubMenu() {
 
     vodMenu.addEventListener("click", function () {
       toggleSubMenu();
-      loadPlaylist("rusmovie.m3u");
+      loadPlaylist("https://raw.githubusercontent.com/rosskr/m3u/main/rusmovie.m3u");
     });
 
     russianTVMenu.addEventListener("click", function () {
       toggleSubMenu();
-      loadPlaylist("https://iptv-org.github.io/iptv/countries/ru.m3u");
+      loadPlaylist("<ENTER_RUSSIAN_TV_PLAYLIST_URL>");
     });
 
     usTVMenu.addEventListener("click", function () {
@@ -258,41 +258,40 @@ function toggleSubMenu() {
       return streams;
     }
 
-function displayStreamList(streams) {
-  const streamList = document.getElementById("streamList");
-  streamList.innerHTML = "";
-  let prevGroup = "";
+    function displayStreamList(streams) {
+      const streamList = document.getElementById("streamList");
+      streamList.innerHTML = "";
+      let prevGroup = "";
 
-  for (let i = 0; i < streams.length; i++) {
-    const stream = streams[i];
-    const listItem = document.createElement("li");
-    const link = document.createElement("a");
+      for (let i = 0; i < streams.length; i++) {
+        const stream = streams[i];
+        const listItem = document.createElement("li");
+        const link = document.createElement("a");
 
-    if (stream.group !== prevGroup) {
-      prevGroup = stream.group;
-      const groupDesc = document.createElement("div");
-      groupDesc.className = "group-description";
-      groupDesc.textContent = stream.group;
-      streamList.appendChild(groupDesc);
+        if (stream.group !== prevGroup) {
+          prevGroup = stream.group;
+          const groupDesc = document.createElement("div");
+          groupDesc.className = "group-description";
+          groupDesc.textContent = stream.group;
+          streamList.appendChild(groupDesc);
+        }
+
+        link.textContent = stream.description;
+        link.href = "#";
+        link.onclick = function () {
+          playStream(stream.url, stream.description);
+          return false;
+        };
+
+        listItem.appendChild(link);
+        streamList.appendChild(listItem);
+      }
     }
 
-    link.textContent = stream.description;
-    link.href = "#";
-    link.onclick = function () {
-      playStream(stream.url);
-      return false;
-    };
-
-    listItem.appendChild(link);
-    streamList.appendChild(listItem);
-  }
-}
-
-
-    function playStream(url) {
+    function playStream(url, description) {
       const video = document.getElementById("player");
       const streamDescription = document.getElementById("streamDescription");
-      streamDescription.textContent = "";
+      streamDescription.textContent = description;
 
       if (Hls.isSupported()) {
         const hls = new Hls();
@@ -305,8 +304,6 @@ function displayStreamList(streams) {
 
       video.play();
     }
-
-    // Rest of your existing code...
   </script>
 </body>
 </html>
