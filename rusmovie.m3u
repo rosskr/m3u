@@ -1,6 +1,6 @@
 #EXTM3U
 
-#EXTGRP:Kak dolgo ya tebya zhdala 
+#EXTGRP:КАК ДОЛГО Я ТЕБЯ ЖДАЛА (2019)
 #EXTINF:100, 1 seriiya
 https://cloud.cdnland.in/1942d257a2e9e3ad0ebb2251c88fcccb:2023061318/tvseries/51138c20efeb5fb380e7f71a0066f9d22904dd5d/720.mp4:hls:manifest.m3u8
 
@@ -15,3 +15,7 @@ https://cloud.cdnland.in/9c4a6ebfb3f5f5d6b93506d2cd38d3c2:2023061216/tvseries/99
 
 #EXTINF:100, 5 seriiya
 https://cloud.cdnland.in/9c4a6ebfb3f5f5d6b93506d2cd38d3c2:2023061216/tvseries/993d43fc6d60dff63098915d26bc86cab1125f37/720.mp4:hls:manifest.m3u8
+
+#EXTGRP:ДВА ХОЛМА (1-2 СЕЗОН)
+#EXTINF:100, 1 seriiya
+https://cloud.cdnland.in/5db4ab48117bb27264644d0b27bc815e:2023061402/tvseries/241e627586f1b75c19eded800453ae0304cbd2cd/240.mp4:hls:manifest.m3u8
