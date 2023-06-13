@@ -4,7 +4,7 @@
 
 #EXTINF:100, 1 серия
 #EXTIMG:https://kinokong.pro/uploads/mini/281x391/df/543fca5fea722a5cd2865e6946f184.jpg
-https://www.youtube.com/watch?v=yCIti018Srw
+<iframe width="560" height="315" src="https://www.youtube.com/embed/yCIti018Srw?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 #EXTINF:100, 2 серия
 https://cloud.cdnland.in/1ed1b8a5fec5b03d0742c8f9ea5e7346:2023061318/tvseries/43da697dbf0c357d0bb20eec3e90030a06c8e9e0/720.mp4:hls:manifest.m3u8
