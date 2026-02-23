@@ -130,6 +130,12 @@
       padding: 5px;
       margin-bottom: 5px;
     }
+
+    .stream-thumbnail {
+      width: 100%;
+      display: block;
+      margin-bottom: 3px;
+    }
 a:link, a:visited {
   background-color: white;
   color: black;
@@ -202,7 +208,10 @@ a:hover, a:active {
         })
         .catch((error) => {
           const streamList = document.getElementById("streamList");
-          streamList.innerHTML = "Error loading playlist: " + error;
+          const msg = error instanceof TypeError
+            ? "Error loading playlist: Could not fetch the URL. Check for CORS restrictions or network connectivity."
+            : "Error loading playlist: " + error;
+          streamList.innerHTML = msg;
         });
     }
 
@@ -222,7 +231,7 @@ a:hover, a:active {
 
     russianTVMenu.addEventListener("click", function () {
       toggleSubMenu();
-      loadPlaylist("<ENTER_RUSSIAN_TV_PLAYLIST_URL>");
+      loadPlaylist("https://iptv-org.github.io/iptv/countries/ru.m3u");
     });
 
     usTVMenu.addEventListener("click", function () {
@@ -244,7 +253,7 @@ a:hover, a:active {
     // Load playlist when Enter key is pressed in the input field
     const playlistInput = document.getElementById("playlistInput");
     playlistInput.addEventListener("keyup", function (event) {
-      if (event.keyCode === 13) {
+      if (event.key === "Enter") {
         event.preventDefault();
         loadButton.click();
       }
@@ -254,18 +263,32 @@ a:hover, a:active {
       var streams = [];
       var lines = data.trim().split("\n");
       var currentGroup = "Default";
+      var currentImg = "";
 
       for (var i = 0; i < lines.length; i++) {
         var line = lines[i].trim();
 
         if (line.startsWith("#EXTGRP:")) {
           currentGroup = line.substring(8);
+        } else if (line.startsWith("#EXTIMG:")) {
+          currentImg = line.substring(8);
         } else if (line.startsWith("#EXTINF:")) {
           var duration = line.split(":")[1].split(",")[0];
           var description = line.split(",").slice(1).join(",");
-          var url = lines[i + 1].trim();
 
-          streams.push({ duration, description, url, group: currentGroup });
+          // Skip any additional #EXT* directives between #EXTINF and the stream URL
+          var j = i + 1;
+          while (j < lines.length && lines[j].trim().startsWith("#EXT")) {
+            if (lines[j].trim().startsWith("#EXTIMG:")) {
+              currentImg = lines[j].trim().substring(8);
+            }
+            j++;
+          }
+          var url = j < lines.length ? lines[j].trim() : "";
+
+          streams.push({ duration, description, url, group: currentGroup, img: currentImg });
+          currentImg = "";
+          i = j; // advance past the URL line (loop will also increment i)
         }
       }
 
@@ -290,7 +313,17 @@ a:hover, a:active {
           streamList.appendChild(groupDesc);
         }
 
-        link.textContent = stream.description;
+        if (stream.img) {
+          const img = document.createElement("img");
+          img.src = stream.img;
+          img.alt = stream.description;
+          img.className = "stream-thumbnail";
+          link.appendChild(img);
+        }
+        const label = document.createElement("span");
+        label.textContent = stream.description;
+        link.appendChild(label);
+
         link.href = "#";
         link.onclick = function () {
           playStream(stream.url, stream.description);
@@ -306,6 +339,34 @@ a:hover, a:active {
       const video = document.getElementById("player");
       const streamDescription = document.getElementById("streamDescription");
       streamDescription.textContent = description;
+
+      // Remove any existing YouTube iframe
+      const existingIframe = document.getElementById("youtubePlayer");
+      if (existingIframe) existingIframe.remove();
+
+      // Handle YouTube iframe embed strings stored in M3U files
+      if (url.trim().startsWith("<iframe")) {
+        const srcMatch = url.match(/src="([^"]+)"/);
+        if (srcMatch) {
+          video.style.display = "none";
+          const iframe = document.createElement("iframe");
+          iframe.id = "youtubePlayer";
+          iframe.src = srcMatch[1];
+          iframe.style.cssText = "width:100%;height:400px;border:none;display:block;";
+          iframe.allowFullscreen = true;
+          video.parentNode.insertBefore(iframe, video);
+        }
+        return;
+      }
+
+      // Restore video element visibility (may have been hidden for YouTube)
+      video.style.display = "";
+
+      // Destroy previous HLS instance to prevent resource leak
+      if (window.hls) {
+        window.hls.destroy();
+        window.hls = null;
+      }
 
       if (Hls.isSupported()) {
         const hls = new Hls();

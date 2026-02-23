@@ -93,8 +93,9 @@ User action
 {
   duration: "100",        // from #EXTINF duration field
   description: "string",  // display name (after the comma in #EXTINF)
-  url: "https://...",     // the stream URL on the next line
-  group: "Group Name"     // from the most recent #EXTGRP directive
+  url: "https://...",     // the stream URL (or iframe HTML string for YouTube entries)
+  group: "Group Name",    // from the most recent #EXTGRP directive
+  img: "https://..."      // thumbnail URL from #EXTIMG (empty string if absent)
 }
 ```
 
@@ -176,12 +177,15 @@ https://stream-url.example.com/stream.m3u8
 
 ## Known Issues / TODOs
 
-- **Russian TV placeholder** (index.html:225): `russianTVMenu` calls `loadPlaylist("<ENTER_RUSSIAN_TV_PLAYLIST_URL>")` — this will fail until a real URL is substituted.
-- **HLS instance leak**: `playStream` creates a new `Hls()` on every call without calling `hls.destroy()` on the previous instance.
-- **No CORS handling**: `fetch` requests for external M3U files will fail if the host does not serve appropriate CORS headers.
-- **`#EXTIMG` ignored**: Thumbnail URLs are present in `rusmovie.m3u` but `parseM3U` does not extract them and `displayStreamList` does not render them.
-- **YouTube iframe in M3U**: `rusmovie.m3u` line 7 contains an iframe embed as a stream URL. The current `playStream` function passes this to HLS.js, which will fail. YouTube embeds require a separate iframe rendering path.
-- **`keyCode` deprecated**: The Enter-key handler (line 247) uses `event.keyCode` — prefer `event.key === "Enter"`.
+All previously documented issues have been resolved:
+
+- **Russian TV URL**: `russianTVMenu` now loads `https://iptv-org.github.io/iptv/countries/ru.m3u`.
+- **HLS instance leak**: `playStream` calls `window.hls.destroy()` before creating a new `Hls()` instance.
+- **CORS error messaging**: The `fetch` catch handler detects `TypeError` (the browser error type for CORS/network failures) and shows a descriptive message instead of a generic one. CORS itself is a browser-enforced constraint; the URL being fetched must serve `Access-Control-Allow-Origin` headers.
+- **`#EXTIMG` support**: `parseM3U` now extracts `#EXTIMG` URLs into `stream.img`. `displayStreamList` renders a thumbnail `<img>` above the stream title for any entry that has one. `.stream-thumbnail` CSS class controls the display.
+- **YouTube iframe in M3U**: `playStream` detects URLs that are iframe HTML strings (start with `<iframe`), extracts the `src` attribute, and renders a `<iframe id="youtubePlayer">` element in place of the video element. The video element is hidden while YouTube is playing and restored when switching to an HLS stream.
+- **`#EXTIMG` before URL bug (implicit)**: The old `parseM3U` read `lines[i+1]` as the URL unconditionally, which incorrectly used the `#EXTIMG` line as the URL for entries that had a thumbnail. Fixed by scanning forward past any `#EXT*` directives to find the actual stream URL.
+- **`keyCode` deprecated**: Enter-key handler now uses `event.key === "Enter"`.
 
 ---
 
