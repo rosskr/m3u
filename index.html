@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>M3U Playlist Player - v6_13_6_58</title>
+  <title>M3U Playlist Player - v2_25_2026</title>
   <link href="https://cdn.plyr.io/3.6.7/plyr.css" rel="stylesheet">
   <style>
     body {
@@ -325,10 +325,15 @@ a:hover, a:active {
         link.appendChild(label);
 
         link.href = "#";
-        link.onclick = function () {
-          playStream(stream.url, stream.description);
-          return false;
-        };
+        link.onclick = (function (item) {
+          return function () {
+            const prev = document.querySelector(".selected-stream");
+            if (prev) prev.classList.remove("selected-stream");
+            item.classList.add("selected-stream");
+            playStream(stream.url, stream.description);
+            return false;
+          };
+        })(listItem);
 
         listItem.appendChild(link);
         streamList.appendChild(listItem);
