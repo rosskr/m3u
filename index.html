@@ -345,6 +345,11 @@ a:hover, a:active {
       const streamDescription = document.getElementById("streamDescription");
       streamDescription.textContent = description;
 
+      // Upgrade http:// to https:// when page is served over HTTPS to avoid mixed-content blocking
+      if (location.protocol === "https:" && url.startsWith("http://")) {
+        url = url.replace("http://", "https://");
+      }
+
       // Remove any existing YouTube iframe
       const existingIframe = document.getElementById("youtubePlayer");
       if (existingIframe) existingIframe.remove();
@@ -375,6 +380,11 @@ a:hover, a:active {
 
       if (Hls.isSupported()) {
         const hls = new Hls();
+        hls.on(Hls.Events.ERROR, function (event, data) {
+          if (data.fatal) {
+            streamDescription.textContent = description + " — Stream error: " + (data.details || "could not load stream");
+          }
+        });
         hls.loadSource(url);
         hls.attachMedia(video);
         window.hls = hls;
