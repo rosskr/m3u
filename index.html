@@ -346,8 +346,10 @@ a:hover, a:active {
       streamDescription.textContent = description;
 
       // Upgrade http:// to https:// when page is served over HTTPS to avoid mixed-content blocking
+      let wasUpgraded = false;
       if (location.protocol === "https:" && url.startsWith("http://")) {
         url = url.replace("http://", "https://");
+        wasUpgraded = true;
       }
 
       // Remove any existing YouTube iframe
@@ -382,7 +384,13 @@ a:hover, a:active {
         const hls = new Hls();
         hls.on(Hls.Events.ERROR, function (event, data) {
           if (data.fatal) {
-            streamDescription.textContent = description + " — Stream error: " + (data.details || "could not load stream");
+            let errMsg = description + " — Stream error: " + (data.details || "could not load stream");
+            if (data.type === Hls.ErrorTypes.NETWORK_ERROR) {
+              errMsg += wasUpgraded
+                ? " (stream uses HTTP but was upgraded to HTTPS; the server may not support HTTPS)"
+                : " (SSL/TLS error or server unreachable)";
+            }
+            streamDescription.textContent = errMsg;
           }
         });
         hls.loadSource(url);
