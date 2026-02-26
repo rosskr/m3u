@@ -346,6 +346,7 @@ a:hover, a:active {
       streamDescription.textContent = description;
 
       // Upgrade http:// to https:// when page is served over HTTPS to avoid mixed-content blocking
+      const originalUrl = url;
       let wasUpgraded = false;
       if (location.protocol === "https:" && url.startsWith("http://")) {
         url = url.replace("http://", "https://");
@@ -384,13 +385,17 @@ a:hover, a:active {
         const hls = new Hls();
         hls.on(Hls.Events.ERROR, function (event, data) {
           if (data.fatal) {
-            let errMsg = description + " — Stream error: " + (data.details || "could not load stream");
-            if (data.type === Hls.ErrorTypes.NETWORK_ERROR) {
-              errMsg += wasUpgraded
-                ? " (stream uses HTTP but was upgraded to HTTPS; the server may not support HTTPS)"
-                : " (SSL/TLS error or server unreachable)";
+            if (wasUpgraded && data.type === Hls.ErrorTypes.NETWORK_ERROR) {
+              streamDescription.innerHTML =
+                description + " — This stream is HTTP-only and cannot play from a secure (HTTPS) page. " +
+                '<a href="' + originalUrl + '" target="_blank" rel="noopener">Open stream directly</a>';
+            } else {
+              let errMsg = description + " — Stream error: " + (data.details || "could not load stream");
+              if (data.type === Hls.ErrorTypes.NETWORK_ERROR) {
+                errMsg += " (SSL/TLS error or server unreachable)";
+              }
+              streamDescription.textContent = errMsg;
             }
-            streamDescription.textContent = errMsg;
           }
         });
         hls.loadSource(url);
